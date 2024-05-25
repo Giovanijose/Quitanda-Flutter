@@ -24,7 +24,7 @@ class _HomeTabState extends State<HomeTab> {
         centerTitle: true,
         title: Text.rich(
           TextSpan(
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 30,
             ),
             children: [
