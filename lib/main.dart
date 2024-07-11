@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Greengroccer',
       theme: ThemeData(
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white.withAlpha(190),
@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: Colors.green, foregroundColor: Colors.white),
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white
-        ),
+            backgroundColor: Colors.green, foregroundColor: Colors.white),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
