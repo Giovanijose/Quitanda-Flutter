@@ -28,6 +28,8 @@ class AuthController extends GetxController {
     AuthResult result = await authRepository.validateToken(token);
 
     result.when(success: (user) {
+      this.user = user;
+
       saveTokenAndProceedToBase();
     }, error: (message) {
       signOut();
