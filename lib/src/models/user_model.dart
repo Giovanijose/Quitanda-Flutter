@@ -30,6 +30,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'name: $name | cpf: $cpf';
+    return 'name: $name | cpf: $cpf | phone: $phone | password $password | email $email';
   }
 }
