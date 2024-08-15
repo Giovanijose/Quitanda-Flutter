@@ -25,6 +25,8 @@ class _HomeTabState extends State<HomeTab> {
     runAddCardAdnimation(gkImage);
   }
 
+  final controler = Get.find<HomeController>();
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +87,9 @@ class _HomeTabState extends State<HomeTab> {
                 vertical: 10,
               ),
               child: TextFormField(
+                onChanged: (value) {
+                  controler.searchTitle.value = value;
+                },
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -115,7 +120,7 @@ class _HomeTabState extends State<HomeTab> {
                 padding: const EdgeInsets.only(
                   left: 25,
                 ),
-                child: !controller.isLoading
+                child: !controller.isCategoryLoading
                     ? ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (__, index) {
@@ -156,7 +161,7 @@ class _HomeTabState extends State<HomeTab> {
             // Grid
             GetBuilder<HomeController>(builder: (controller) {
               return Expanded(
-                child: !controller.isLoading
+                child: !controller.isProductLoading
                     ? GridView.builder(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         physics: const BouncingScrollPhysics(),
@@ -167,10 +172,15 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                         ),
-                        itemCount: appData.items.length,
+                        itemCount: controller.allProducts.length,
                         itemBuilder: (__, index) {
+                          if ((index + 1) == controller.allProducts.length &&
+                              !controller.isLastPage) {
+                            controller.loadMoreProducts();
+                          }
+
                           return ItemTile(
-                            item: appData.items[index],
+                            item: controller.allProducts[index],
                             cartAnimationMethod: itemSelectedCartAnimations,
                           );
                         },
