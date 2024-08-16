@@ -19,13 +19,14 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
+
+  final searchController = TextEditingController();
+
   late Function(GlobalKey) runAddCardAdnimation;
 
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddCardAdnimation(gkImage);
   }
-
-  final controler = Get.find<HomeController>();
 
   @override
   void initState() {
@@ -81,37 +82,53 @@ class _HomeTabState extends State<HomeTab> {
         child: Column(
           children: [
             // Campo de pesquisa
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              child: TextFormField(
-                onChanged: (value) {
-                  controler.searchTitle.value = value;
-                },
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    isDense: true,
-                    hintText: 'Pesquise aqui...',
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 14,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: CustomColors.customContrastColor,
-                      size: 21,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(60),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ))),
-              ),
-            ),
+            GetBuilder<HomeController>(builder: (controller) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                child: TextFormField(
+                  controller: searchController,
+                  onChanged: (value) {
+                    controller.searchTitle.value = value;
+                  },
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      isDense: true,
+                      hintText: 'Pesquise aqui...',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade400,
+                        fontSize: 14,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: CustomColors.customContrastColor,
+                        size: 21,
+                      ),
+                      suffixIcon: controller.searchTitle.value.isNotEmpty
+                          ? IconButton(
+                              onPressed: () {
+                                searchController.clear();
+                                controller.searchTitle.value = '';
+                                FocusScope.of(context).unfocus();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: CustomColors.customContrastColor,
+                                size: 21,
+                              ))
+                          : null,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(60),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ))),
+                ),
+              );
+            }),
 
             // Categorias
             GetBuilder<HomeController>(builder: (controller) {
@@ -162,28 +179,42 @@ class _HomeTabState extends State<HomeTab> {
             GetBuilder<HomeController>(builder: (controller) {
               return Expanded(
                 child: !controller.isProductLoading
-                    ? GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 9 / 11.5,
+                    ? Visibility(
+                        visible: (controller.currentCategory?.items ?? [])
+                            .isNotEmpty,
+                        replacement: Column(
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 40,
+                              color: CustomColors.customSwatchColor,
+                            ),
+                            const Text('Não há iems para apresentar')
+                          ],
                         ),
-                        itemCount: controller.allProducts.length,
-                        itemBuilder: (__, index) {
-                          if ((index + 1) == controller.allProducts.length &&
-                              !controller.isLastPage) {
-                            controller.loadMoreProducts();
-                          }
+                        child: GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 9 / 11.5,
+                          ),
+                          itemCount: controller.allProducts.length,
+                          itemBuilder: (__, index) {
+                            if ((index + 1) == controller.allProducts.length &&
+                                !controller.isLastPage) {
+                              controller.loadMoreProducts();
+                            }
 
-                          return ItemTile(
-                            item: controller.allProducts[index],
-                            cartAnimationMethod: itemSelectedCartAnimations,
-                          );
-                        },
+                            return ItemTile(
+                              item: controller.allProducts[index],
+                              cartAnimationMethod: itemSelectedCartAnimations,
+                            );
+                          },
+                        ),
                       )
                     : GridView.count(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),

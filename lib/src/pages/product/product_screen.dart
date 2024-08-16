@@ -5,7 +5,7 @@ import 'package:greengrocer/src/pages/common_widgets/quantity_widget.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
-  ProductScreen({
+  const ProductScreen({
     super.key,
     required this.item,
   });
@@ -33,7 +33,7 @@ class _ProductScreenState extends State<ProductScreen> {
               Expanded(
                 child: Hero(
                   tag: widget.item.imgUrl,
-                  child: Image.asset(
+                  child: Image.network(
                     widget.item.imgUrl,
                   ),
                 ),
