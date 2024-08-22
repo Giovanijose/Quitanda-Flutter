@@ -40,7 +40,7 @@ class NavigationController extends GetxController {
 
     // _pageController.jumpToPage(page);
     _pageController.animateToPage(
-      currentIndex,
+      page,
       duration: const Duration(milliseconds: 700),
       curve: Curves.ease,
     );
