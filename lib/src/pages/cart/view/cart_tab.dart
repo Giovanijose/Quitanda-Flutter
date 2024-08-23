@@ -30,6 +30,20 @@ class _CartTabState extends State<CartTab> {
         children: [
           Expanded(child: GetBuilder<CartController>(
             builder: (controller) {
+              if (controller.cartItems.isEmpty) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.remove_shopping_cart,
+                      size: 40,
+                      color: CustomColors.customSwatchColor,
+                    ),
+                    const Text('Não há item no carrinho'),
+                  ],
+                );
+              }
+
               return ListView.builder(
                 itemBuilder: (__, index) {
                   return CartTile(
