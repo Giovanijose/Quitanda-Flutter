@@ -17,6 +17,7 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   final UtilsServices utilServices = UtilsServices();
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,37 +91,40 @@ class _CartTabState extends State<CartTab> {
                     );
                   },
                 ),
-                SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      bool? result = await showOrderConfirmation();
-                      if (result ?? false) {
-                        showDialog(
-                            context: context,
-                            builder: (_) {
-                              return PaymentDialog(
-                                order: appData.orders.first,
-                              );
-                            });
-                      } else {
-                        utilServices.showToast(
-                            message: 'Pedido não confirmado', isError: true);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.customSwatchColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                GetBuilder<CartController>(
+                  builder: (controller) {
+                    return SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: controller.isCheckoutLoading
+                            ? null
+                            : () async {
+                                bool? result = await showOrderConfirmation();
+                                if (result ?? false) {
+                                  cartController.checkoutCart();
+                                } else {
+                                  utilServices.showToast(
+                                      message: 'Pedido não confirmado',
+                                      isError: true);
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.customSwatchColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        child: controller.isCheckoutLoading
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                'Concluir pedido',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
                       ),
-                    ),
-                    child: const Text(
-                      'Concluir pedido',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 )
               ],
             ),

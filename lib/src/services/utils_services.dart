@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -35,6 +36,11 @@ class UtilsServices {
     DateFormat dateFormat = DateFormat.yMd('pt_BR').add_Hm();
 
     return dateFormat.format(dateTime);
+  }
+
+  decodeQrCodeImage(String value) {
+    String base64String = value.split(',').last;
+    return base64.decode(base64String);
   }
 
   void showToast({
