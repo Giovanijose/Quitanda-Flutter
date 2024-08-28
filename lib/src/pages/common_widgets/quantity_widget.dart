@@ -77,7 +77,6 @@ class _QuantityButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _QuantityButton({
-    super.key,
     required this.color,
     required this.icon,
     required this.onPressed,

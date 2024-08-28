@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:greengrocer/src/models/category_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/home/repository/home_repository.dart';

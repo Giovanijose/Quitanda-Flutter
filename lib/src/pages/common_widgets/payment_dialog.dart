@@ -2,7 +2,6 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/models/orders_model.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class PaymentDialog extends StatelessWidget {
   final OrderModel order;

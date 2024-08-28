@@ -72,7 +72,8 @@ class OrderTile extends StatelessWidget {
                                 child: SizedBox(
                                   height: 150,
                                   child: ListView(
-                                    children: order.items.map((orderItem) {
+                                    children:
+                                        controller.order.items.map((orderItem) {
                                       return _OrdemItemWidget(
                                         utilsServices: utilsServices,
                                         orderItem: orderItem,
@@ -123,7 +124,8 @@ class OrderTile extends StatelessWidget {
 
                         // Pagamento
                         Visibility(
-                          visible: order.status == 'pending_payment',
+                          visible: order.status == 'pending_payment' &&
+                              !order.isOverDue,
                           child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -153,7 +155,6 @@ class OrderTile extends StatelessWidget {
 
 class _OrdemItemWidget extends StatelessWidget {
   const _OrdemItemWidget({
-    super.key,
     required this.utilsServices,
     required this.orderItem,
   });
